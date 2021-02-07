@@ -29,6 +29,8 @@ class GameController extends AbstractController
     }
 
     /**
+     * Accueil
+     *
      * @Route("/", name="homepage")
      *
      * @param Request $request
@@ -64,6 +66,8 @@ class GameController extends AbstractController
     }
 
     /**
+     * Jeu
+     *
      * @Route("/play", name="game")
      *
      * @param Request $request
@@ -76,6 +80,55 @@ class GameController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('main/game.html.twig');
+        // Initialisation du placement des cartes
+        $request->getSession()->set('cartes', $this->service->definirEmplacementCartes());
+        // Initialisation du tableau à afficher
+        $request->getSession()->set('tableau', $this->service->initialiserTableau());
+
+        $tableau = $this->renderView('partials/tableau.html.twig', array('classe' => $request->getSession()->get('tableau')));
+
+        return $this->render('main/game.html.twig', array('tableau' => $tableau));
+    }
+
+    /**
+     * Retourne une carte dans le jeu
+     *
+     * @Route("/play-card", name="play_card")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function retournerCarteAjax(Request $request)
+    {
+        $carte = $request->request->get('carte');
+        $emplacements = $request->getSession()->get('cartes');
+        $tableau = $request->getSession()->get('tableau');
+
+        $tableau[$carte] = $emplacements[$carte];
+        $request->getSession()->set('tableau', $tableau);
+
+        return $this->render('partials/tableau.html.twig', array('classe' => $tableau));
+    }
+
+    /**
+     * Annule les deux cartes passées en paramètre
+     *
+     * @Route("/cancel-cards", name="cancel_cards")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function annulerCartesAjax(Request $request)
+    {
+        $cartes = explode(',', $request->request->get('cartes'));
+        $tableau = $request->getSession()->get('tableau');
+
+        foreach ($cartes as $carte) {
+            $tableau[$carte] = 'not-found';
+        }
+
+        $request->getSession()->set('tableau', $tableau);
+
+        return $this->render('partials/tableau.html.twig', array('classe' => $tableau));
     }
 }

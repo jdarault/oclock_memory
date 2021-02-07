@@ -24,46 +24,7 @@
         </div>
         <div class="row">
             <div class="col-8 playground-center">
-                <table class="table table-responsive">
-                    <tbody>
-                        <tr>
-                            <td><div id="A-1" class="fruits not-found"></div></td>
-                            <td><div id="A-2" class="fruits not-found"></div></td>
-                            <td><div id="A-3" class="fruits not-found"></div></td>
-                            <td><div id="A-4" class="fruits not-found"></div></td>
-                            <td><div id="A-5" class="fruits not-found"></div></td>
-                            <td><div id="A-6" class="fruits not-found"></div></td>
-                            <td><div id="A-7" class="fruits not-found"></div></td>
-                        </tr>
-                        <tr>
-                            <td><div id="B-1" class="fruits not-found"></div></td>
-                            <td><div id="B-2" class="fruits not-found"></div></td>
-                            <td><div id="B-3" class="fruits not-found"></div></td>
-                            <td><div id="B-4" class="fruits not-found"></div></td>
-                            <td><div id="B-5" class="fruits not-found"></div></td>
-                            <td><div id="B-6" class="fruits not-found"></div></td>
-                            <td><div id="B-7" class="fruits not-found"></div></td>
-                        </tr>
-                        <tr>
-                            <td><div id="C-1" class="fruits not-found"></div></td>
-                            <td><div id="C-2" class="fruits not-found"></div></td>
-                            <td><div id="C-3" class="fruits not-found"></div></td>
-                            <td><div id="C-4" class="fruits not-found"></div></td>
-                            <td><div id="C-5" class="fruits not-found"></div></td>
-                            <td><div id="C-6" class="fruits not-found"></div></td>
-                            <td><div id="C-7" class="fruits not-found"></div></td>
-                        </tr>
-                        <tr>
-                            <td><div id="D-1" class="fruits not-found"></div></td>
-                            <td><div id="D-2" class="fruits not-found"></div></td>
-                            <td><div id="D-3" class="fruits not-found"></div></td>
-                            <td><div id="D-4" class="fruits not-found"></div></td>
-                            <td><div id="D-5" class="fruits not-found"></div></td>
-                            <td><div id="D-6" class="fruits not-found"></div></td>
-                            <td><div id="D-7" class="fruits not-found"></div></td>
-                        </tr>
-                    </tbody>
-                </table>
+                {{ tableau|raw }}
             </div>
         </div>
         <div class="row text-center">
@@ -78,15 +39,10 @@
 
 {% block js_include %}
     <script>
-        $(document).ready(function () {
-            start_game();
-        });
-
         var i = 0;
         function start_game() {
             if (i == 0) {
                 i = 1;
-                var elem = $('#myBar');
                 var width = 1;
                 var id = setInterval(frame, 10);
                 function frame() {
@@ -100,5 +56,40 @@
                 }
             }
         }
+
+        $(document).ready(function () {
+            var cartes = [];
+            start_game();
+
+            $(document).on('click', '.fruits', function () {
+                if ($(this).hasClass('not-found')) {
+                    cartes.push($(this).attr('id'));
+                    console.log(cartes);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ path('play_card')}} ",
+                        data: "&carte="+$(this).attr('id'),
+                        complete: function(data) {
+                            $('.playground-center').html(data.responseText).show();
+
+                            if (cartes.length === 2 && $('#'+cartes[0]).attr('class') !== $('#'+cartes[1]).attr('class')) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ path('cancel_cards')}} ",
+                                    data: "&cartes="+cartes,
+                                    complete: function(data) {
+                                        cartes = [];
+                                        $('.playground-center').html(data.responseText).show();
+                                    }
+                                });
+                            } else if (cartes.length === 2 && $('#'+cartes[0]).attr('class') === $('#'+cartes[1]).attr('class')) {
+                                cartes = [];
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 {% endblock %}

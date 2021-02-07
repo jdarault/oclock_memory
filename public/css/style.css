@@ -30,6 +30,7 @@ table td {
   content: "";
   position: relative;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 .fruits.not-found {
   background: url("../images/interrogation.png");

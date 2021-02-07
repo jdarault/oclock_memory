@@ -36,6 +36,7 @@ table {
   content: '';
   position: relative;
   background-repeat: no-repeat;
+  cursor: pointer;
 
   &.not-found {
     background: url('../images/interrogation.png');
