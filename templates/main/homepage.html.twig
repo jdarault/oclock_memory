@@ -1,5 +1,21 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                    <div class="form-group row">
+                        {{ form_label(form.nom) }}
+                        <div class="col-md-10">
+                            {{ form_widget(form.nom) }}
+                            {{ form_errors(form.nom) }}
+                        </div>
+                    </div>
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

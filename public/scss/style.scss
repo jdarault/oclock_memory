@@ -1,0 +1,97 @@
+$width: 100px;
+$height: 100px;
+
+table {
+  &.table {
+    width: 700px !important;
+    height: 400px !important;
+    margin: 50px auto;
+  }
+
+  td {
+    width: $width;
+    height: $height;
+    border: 1px solid black;
+    padding: 0 !important;
+  }
+}
+
+.game-title {
+  margin-top: 30px;
+}
+
+.playground-center{
+  margin: 0 auto;
+}
+
+.progress-bar {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.fruits {
+  width: $width;
+  height: $height;
+  background: url('../images/cards.png');
+  content: '';
+  position: relative;
+  background-repeat: no-repeat;
+
+  &.not-found {
+    background: url('../images/interrogation.png');
+  }
+  &.pomme-rouge {
+    background-position: 0 0;
+  }
+  &.banane {
+    background-position: 0 -100px;
+  }
+  &.orange {
+    background-position: 0 -200px;
+  }
+  &.citron-vert {
+    background-position: 0 -300px;
+  }
+  &.grenade {
+    background-position: 0 -400px;
+  }
+  &.abricot {
+    background-position: 0 -500px;
+  }
+  &.citron-jaune {
+    background-position: 0 -600px;
+  }
+  &.fraise {
+    background-position: 0 -700px;
+  }
+  &.pomme-verte {
+    background-position: 0 -800px;
+  }
+  &.peche {
+    background-position: 0 -900px;
+  }
+  &.raisin {
+    background-position: 0 -1000px;
+  }
+  &.pasteque {
+    background-position: 0 -1100px;
+  }
+  &.prune {
+    background-position: 0 -1200px;
+  }
+  &.poire {
+    background-position: 0 -1300px;
+  }
+  &.griotte {
+    background-position: 0 -1400px;
+  }
+  &.framboise {
+    background-position: 0 -1500px;
+  }
+  &.mangue {
+    background-position: 0 -1600px;
+  }
+  &.cerise-jaune {
+    background-position: 0 -1700px;
+  }
+}

@@ -20,4 +20,13 @@ class ScoreRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Score::class);
     }
+
+    /**
+     * Récupération des dix meilleurs scores en base
+     *
+     * @return Score[]|array
+     */
+    public function recupererMeilleursScores() {
+        return $this->findBy(array(), array('tempsRealise' => 'ASC'), 10);
+    }
 }
