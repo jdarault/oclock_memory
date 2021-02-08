@@ -17,5 +17,19 @@
                 {{ form_end(form) }}
             </div>
         </div>
+        <div class="row">
+            <div class="col-4">
+                <h3>Meilleurs Scores</h3>
+                {% if scores is null or scores|length == 0 %}
+                    <p>Aucun score</p>
+                {% else %}
+                    <ul>
+                        {% for s in scores %}
+                            <li>{{ s.nom }} <span>{{ s.tempsRealise|date('i:s') }}</span></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
