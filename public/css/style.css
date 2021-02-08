@@ -21,6 +21,8 @@ table td {
 .progress-bar {
   margin: 0 auto;
   padding: 0;
+  background-color: white;
+  color: black;
 }
 
 .fruits {
@@ -88,6 +90,31 @@ table td {
 }
 .fruits.cerise-jaune {
   background-position: 0 -1700px;
+}
+
+.btn-grad {
+  background-image: linear-gradient(to right, #FF8008 0%, #FFC837 51%, #FF8008 100%);
+}
+
+.btn-grad {
+  margin: 50px auto;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  text-decoration: none;
+  width: 250px;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=style.css.map */

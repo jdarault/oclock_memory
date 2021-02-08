@@ -29,8 +29,32 @@
         </div>
         <div class="row text-center">
             <div class="col-8 progress-bar">
+                <h3 id="time">00:00</h3>
                 <div id="myProgress">
                     <div id="myBar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12">
+                <a href="{{ path('stop_game') }}" class="btn-grad">Quitter le jeu</a>
+            </div>
+        </div>
+    </div>
+
+    {# Modale de fin de partie #}
+    <div id="modale-fin" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="titre-modale" class="modal-title"></h5>
+                </div>
+                <div class="modal-body">
+                    <p>Recommencer une petite partie ?</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ path('game') }}"><button type="button" class="btn btn-primary">Recommencer</button></a>
+                    <a href="{{ path('homepage') }}"><button type="button" class="btn btn-secondary" data-dismiss="modal">Quitter</button></a>
                 </div>
             </div>
         </div>
@@ -39,40 +63,81 @@
 
 {% block js_include %}
     <script>
-        var i = 0;
         function start_game() {
-            if (i == 0) {
-                i = 1;
-                var width = 1;
-                var id = setInterval(frame, 10);
-                function frame() {
-                    if (width >= 100) {
-                        clearInterval(id);
-                        i = 0;
-                    } else {
-                        width++;
-                        $('#myBar').width(width + '%');
+            var width = 0; /* Avancement de la Progress Bar */
+            var tempsJeu = 180; /* Temps de jeu en secondes */
+            var tempsPasse = 0; /* Temps passé en secondes */
+            var id = setInterval(frame, 1000); /* Initialisation du timer à intervalle d'une seconde */
+
+            /* Fonction appelée toutes les secondes */
+            function frame() {
+                /* Une fois que toutes les cartes sont retournées, on arrête la partie */
+                if ($('.not-found').length === 0) {
+                    clearInterval(id); /* Arrêt du timer */
+                    $('#titre-modale').text('Vous avec gagné !!!'); /* Titre de la modale à afficher */
+                    $('#modale-fin').modal('show'); /* Affichage de la modale */
+
+                    /* Enregistrement de la partie */
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ path('save_game')}} ",
+                        data: "&secondes="+tempsPasse,
+                        complete: function(data) {
+                            /* Rien à faire de plus... */
+                        }
+                    });
+                }
+
+                /* Une fois que le temps est écoulé, on stoppe la partie */
+                if (tempsPasse === tempsJeu) {
+                    clearInterval(id); /* Arrêt du timer */
+                    $('#titre-modale').text('Vous avec perdu !!!'); /* Titre de la modale à afficher */
+                    $('#modale-fin').modal('show'); /* Affichage de la modale */
+                } else {
+                    /* Affichage du temps écoulé */
+                    tempsPasse++;
+                    width = Math.round(tempsPasse/tempsJeu*100);
+                    $('#myBar').width(width + '%');
+                    afficherTempsFormate(tempsPasse);
+
+                    /* Changement de couleur de la progress bar selon le pourcentage d'avancement */
+                    if (width >= 50 && width < 80) {
+                        $('#myBar').css('background-color', 'orange');
+                    } else if (width >= 80) {
+                        $('#myBar').css('background-color', 'red');
                     }
                 }
             }
         }
 
+        function afficherTempsFormate(secondes) {
+            /* Init d'un objet Date avec juste les secondes écoulées */
+            var date = new Date(null);
+            date.setSeconds(secondes);
+
+            /* On ne récupère que la partie de la chaine formatée qui nous intéresse MM:SS */
+            $('#time').text(date.toISOString().substr(14, 5));
+        }
+
         $(document).ready(function () {
-            var cartes = [];
-            start_game();
+            var cartes = []; /* Paire de cartes cliquées */
+            start_game(); /* Démarrage du timer */
 
+            /* Gestion d'un click sur une carte */
             $(document).on('click', '.fruits', function () {
+                /* On ne traite que les cartes non retournées */
                 if ($(this).hasClass('not-found')) {
-                    cartes.push($(this).attr('id'));
-                    console.log(cartes);
+                    cartes.push($(this).attr('id')); /* Ajout de la carte pour constituer la paire */
 
+                    /* On informe le serveur de la carte qui a été cliquée */
                     $.ajax({
                         type: 'POST',
                         url: "{{ path('play_card')}} ",
                         data: "&carte="+$(this).attr('id'),
                         complete: function(data) {
-                            $('.playground-center').html(data.responseText).show();
+                            $('.playground-center').html(data.responseText).show(); /* Mise à jour du jeu */
 
+                            /* Si on a une paire et que les cartes sont différentes, on les annule */
                             if (cartes.length === 2 && $('#'+cartes[0]).attr('class') !== $('#'+cartes[1]).attr('class')) {
                                 $.ajax({
                                     type: 'POST',
@@ -84,6 +149,7 @@
                                     }
                                 });
                             } else if (cartes.length === 2 && $('#'+cartes[0]).attr('class') === $('#'+cartes[1]).attr('class')) {
+                                /* Si la paire est identique, on la conserve retournée et on initialise la paire */
                                 cartes = [];
                             }
                         }

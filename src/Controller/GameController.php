@@ -91,6 +91,21 @@ class GameController extends AbstractController
     }
 
     /**
+     * Arrête de jeu et revient sur la homepage
+     *
+     * @Route("/stop", name="stop_game")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function stopAction(Request $request)
+    {
+        // Suppression de toutes les données en sesssion
+        $request->getSession()->clear();
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * Retourne une carte dans le jeu
      *
      * @Route("/play-card", name="play_card")
@@ -130,5 +145,24 @@ class GameController extends AbstractController
         $request->getSession()->set('tableau', $tableau);
 
         return $this->render('partials/tableau.html.twig', array('classe' => $tableau));
+    }
+
+    /**
+     * Enregistre la partie en base
+     *
+     * @Route("/save-game", name="save_game")
+     *
+     * @param Request $request
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function enregistrerPartieAjax(Request $request)
+    {
+        $secondes = $request->request->get('secondes');
+        $nom = $request->getSession()->get('player_name');
+
+        $this->service->enregistrerPartie($nom, $secondes);
+
+        return new Response('');
     }
 }

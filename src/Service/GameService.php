@@ -86,4 +86,20 @@ class GameService
 
         return $jeu;
     }
+
+    /**
+     * Enregistre la partie en base
+     *
+     * @param $nomJoueur
+     * @param $tempsEcoule
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function enregistrerPartie($nomJoueur, $tempsEcoule) {
+        $score = new Score();
+        $score->setNom($nomJoueur);
+        $score->setTempsRealise(new \DateTime("@$tempsEcoule"));
+
+        $this->repository->sauvegarder($score);
+    }
 }
