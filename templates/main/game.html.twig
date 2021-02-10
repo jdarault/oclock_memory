@@ -110,39 +110,51 @@
 
         $(document).ready(function () {
             var cartes = []; /* Paire de cartes cliquées */
+            var processing = false; /* Indique si une requête ajax est en cours */
             start_game(); /* Démarrage du timer */
 
             /* Gestion d'un click sur une carte */
             $(document).on('click', '.fruits', function () {
                 /* On ne traite que les cartes non retournées */
                 if ($(this).hasClass('not-found')) {
-                    cartes.push($(this).attr('id')); /* Ajout de la carte pour constituer la paire */
+                    if (!processing) {
+                        processing = true; /* On indique qu'une requête est en cours */
 
-                    /* On informe le serveur de la carte qui a été cliquée */
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ path('play_card')}} ",
-                        data: "&carte="+$(this).attr('id'),
-                        complete: function(data) {
-                            $('.playground-center').html(data.responseText).show(); /* Mise à jour du jeu */
+                        cartes.push($(this).attr('id')); /* Ajout de la carte pour constituer la paire */
 
-                            /* Si on a une paire et que les cartes sont différentes, on les annule */
-                            if (cartes.length === 2 && $('#'+cartes[0]).attr('class') !== $('#'+cartes[1]).attr('class')) {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "{{ path('cancel_cards')}} ",
-                                    data: "&cartes="+cartes,
-                                    complete: function(data) {
-                                        cartes = [];
-                                        $('.playground-center').html(data.responseText).show();
-                                    }
-                                });
-                            } else if (cartes.length === 2 && $('#'+cartes[0]).attr('class') === $('#'+cartes[1]).attr('class')) {
-                                /* Si la paire est identique, on la conserve retournée et on initialise la paire */
-                                cartes = [];
+                        /* On informe le serveur de la carte qui a été cliquée */
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ path('play_card') }} ",
+                            data: "&carte=" + $(this).attr('id'),
+                            complete: function (data) {
+                                $('.playground-center').html(data.responseText).show(); /* Mise à jour du jeu */
+
+                                /* Si on a une paire et que les cartes sont différentes, on les annule */
+                                if (cartes.length === 2 && $('#' + cartes[0]).attr('class') !== $('#' + cartes[1]).attr('class')) {
+                                    /* On applique un petit délai permettant au joueur de voir les cartes avant de les retourner */
+                                    setTimeout(function () {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "{{ path('cancel_cards') }} ",
+                                            data: "&cartes=" + cartes,
+                                            complete: function (data) {
+                                                processing = false;
+                                                cartes = [];
+                                                $('.playground-center').html(data.responseText).show();
+                                            }
+                                        });
+                                    }, 200);
+                                } else if (cartes.length === 2 && $('#' + cartes[0]).attr('class') === $('#' + cartes[1]).attr('class')) {
+                                    /* Si la paire est identique, on la conserve retournée et on initialise la paire */
+                                    cartes = [];
+                                    processing = false;
+                                } else {
+                                    processing = false;
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
         });
