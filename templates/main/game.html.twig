@@ -1,18 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block css_include %}
-    <style>
-        #myProgress {
-            width: 100%;
-            background-color: grey;
-        }
 
-        #myBar {
-            width: 1%;
-            height: 30px;
-            background-color: green;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
@@ -102,9 +91,9 @@
 
                     /* Changement de couleur de la progress bar selon le pourcentage d'avancement */
                     if (width >= 50 && width < 80) {
-                        $('#myBar').css('background-color', 'orange');
+                        $('#myBar').css('background-color', '#e48029');
                     } else if (width >= 80) {
-                        $('#myBar').css('background-color', 'red');
+                        $('#myBar').css('background-color', '#dc3545');
                     }
                 }
             }

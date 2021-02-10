@@ -1,24 +1,28 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div id="login" class="container-fluid">
         <div class="row">
-            <div class="col-4">
-                {{ form_start(form) }}
-                {{ form_errors(form) }}
-                    <div class="form-group row">
-                        {{ form_label(form.nom) }}
-                        <div class="col-md-10">
-                            {{ form_widget(form.nom) }}
-                            {{ form_errors(form.nom) }}
+            <div class="col-12">
+                <div class="card">
+                    <div class="header">Inscription</div>
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                        <div class="form-group row">
+                            {{ form_label(form.nom) }}
+                            <div class="col-12">
+                                {{ form_widget(form.nom) }}
+                                {{ form_errors(form.nom) }}
+                            </div>
                         </div>
-                    </div>
-                {{ form_rest(form) }}
-                {{ form_end(form) }}
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-4">
+            <div class="col-12">
+                <div class="scores">
                 <h3>Meilleurs Scores</h3>
                 {% if scores is null or scores|length == 0 %}
                     <p>Aucun score</p>
@@ -29,6 +33,7 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+                </div>
             </div>
         </div>
     </div>

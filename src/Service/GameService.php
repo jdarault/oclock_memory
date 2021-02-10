@@ -14,6 +14,7 @@ class GameService
     /** @var ScoreRepository $repository */
     protected $repository;
 
+    // Tableau des cartes à jouer (correspond aux classes CSS)
     private $cartesAJouer = [
         'pomme-rouge', 'pomme-rouge',
         'banane', 'banane',

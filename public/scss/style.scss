@@ -1,124 +1,256 @@
 $width: 100px;
 $height: 100px;
+$text-color : #636363;
+$primary: #e0e5ec;
+$light-shadow: #ffffff;
+$dark-shadow: #a3b1c6;
+$shadow-size: 12px;
+$shadow-blur: 24px;
 
-table {
-  &.table {
-    width: 700px !important;
-    height: 400px !important;
-    margin: 50px auto;
+
+body {
+  background: #eaf2f8;
+
+  #login {
+    .card {
+      margin: 50px auto;
+      width: 300px;
+      -webkit-box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      -moz-box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      background: #dfe8f0;
+      padding: 20px;
+      border-radius: 20px;
+      border: none;
+
+      .header {
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-size: 16px;
+        color:$text-color;
+        font-weight: bold;
+        margin-bottom: 50px;
+        text-align: center;
+      }
+
+      label {
+        font-weight: bold;
+        font-size: 12px;
+        color:$text-color;
+        margin-bottom: 10px;
+      }
+
+      input {
+        width: 100%;
+        border-radius: 20px;
+        height: 35px;
+
+        -webkit-box-shadow: inset 5px 3px 5px $dark-shadow, 6px 5px 11px $light-shadow;
+        -moz-box-shadow: inset 5px 3px 5px $dark-shadow, 6px 5px 11px $light-shadow;
+        box-shadow: inset 5px 3px 5px $dark-shadow, 6px 5px 11px $light-shadow;
+        border: none;
+        background: #eaf2f8;
+      }
+
+      button {
+        margin-top: 50px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        color:$text-color;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        padding: 20px;
+        background: $primary;
+        border: none;
+        box-shadow: $shadow-size $shadow-size $shadow-blur $dark-shadow, -12px -12px $shadow-blur $light-shadow;
+
+        transition: all 250ms;
+        width: 100%;
+        border-radius: 20px;
+
+        &:hover, &:focus {
+          outline: none;
+          cursor: pointer;
+          box-shadow: 3.6px 3.6px 12px $dark-shadow, -3.6px -3.6px 12px $light-shadow;
+        }
+      }
+    }
+
+    .scores {
+      max-width:300px;
+      margin: 0 auto;
+      color:$text-color;
+
+      span {
+        float: right;
+      }
+    }
   }
 
-  td {
+  .fruits {
     width: $width;
     height: $height;
-    border: 1px solid black;
-    padding: 0 !important;
-  }
-}
+    background: url('../images/cards.png');
+    content: '';
+    position: relative;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    -webkit-box-shadow: -9px 13px 39px -16px rgb(0 0 0 / 75%);
+    -moz-box-shadow: -9px 13px 39px -16px rgb(0 0 0 / 75%);
+    box-shadow: -9px 13px 39px -16px rgb(0 0 0 / 75%);
+    border-radius: 20px;
 
-.game-title {
-  margin-top: 30px;
-}
+    &.not-found {
+      background: $primary;
+    }
 
-.playground-center{
-  margin: 0 auto;
-}
+    &.pomme-rouge {
+      background-position: 0 0;
+    }
 
-.progress-bar {
-  margin: 0 auto;
-  padding: 0;
-  background-color: white;
-  color: black;
-}
+    &.banane {
+      background-position: 0 -100px;
+    }
 
-.fruits {
-  width: $width;
-  height: $height;
-  background: url('../images/cards.png');
-  content: '';
-  position: relative;
-  background-repeat: no-repeat;
-  cursor: pointer;
+    &.orange {
+      background-position: 0 -200px;
+    }
 
-  &.not-found {
-    background: url('../images/interrogation.png');
-  }
-  &.pomme-rouge {
-    background-position: 0 0;
-  }
-  &.banane {
-    background-position: 0 -100px;
-  }
-  &.orange {
-    background-position: 0 -200px;
-  }
-  &.citron-vert {
-    background-position: 0 -300px;
-  }
-  &.grenade {
-    background-position: 0 -400px;
-  }
-  &.abricot {
-    background-position: 0 -500px;
-  }
-  &.citron-jaune {
-    background-position: 0 -600px;
-  }
-  &.fraise {
-    background-position: 0 -700px;
-  }
-  &.pomme-verte {
-    background-position: 0 -800px;
-  }
-  &.peche {
-    background-position: 0 -900px;
-  }
-  &.raisin {
-    background-position: 0 -1000px;
-  }
-  &.pasteque {
-    background-position: 0 -1100px;
-  }
-  &.prune {
-    background-position: 0 -1200px;
-  }
-  &.poire {
-    background-position: 0 -1300px;
-  }
-  &.griotte {
-    background-position: 0 -1400px;
-  }
-  &.framboise {
-    background-position: 0 -1500px;
-  }
-  &.mangue {
-    background-position: 0 -1600px;
-  }
-  &.cerise-jaune {
-    background-position: 0 -1700px;
-  }
-}
+    &.citron-vert {
+      background-position: 0 -300px;
+    }
 
-.btn-grad {
-  background-image: linear-gradient(to right, #FF8008 0%, #FFC837  51%, #FF8008  100%)
-}
-.btn-grad {
-  margin: 50px auto;
-  padding: 15px 45px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
-  display: block;
-  text-decoration: none;
-  width: 250px;
-}
+    &.grenade {
+      background-position: 0 -400px;
+    }
 
-.btn-grad:hover {
-  background-position: right center;
-  color: #fff;
-  text-decoration: none;
+    &.abricot {
+      background-position: 0 -500px;
+    }
+
+    &.citron-jaune {
+      background-position: 0 -600px;
+    }
+
+    &.fraise {
+      background-position: 0 -700px;
+    }
+
+    &.pomme-verte {
+      background-position: 0 -800px;
+    }
+
+    &.peche {
+      background-position: 0 -900px;
+    }
+
+    &.raisin {
+      background-position: 0 -1000px;
+    }
+
+    &.pasteque {
+      background-position: 0 -1100px;
+    }
+
+    &.prune {
+      background-position: 0 -1200px;
+    }
+
+    &.poire {
+      background-position: 0 -1300px;
+    }
+
+    &.griotte {
+      background-position: 0 -1400px;
+    }
+
+    &.framboise {
+      background-position: 0 -1500px;
+    }
+
+    &.mangue {
+      background-position: 0 -1600px;
+    }
+
+    &.cerise-jaune {
+      background-position: 0 -1700px;
+    }
+  }
+
+  .btn-grad {
+    margin: 50px auto;
+    font-weight: bold;
+    font-size: 14px;
+    color:$text-color;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 20px;
+    background: $primary;
+    border: none;
+    box-shadow: $shadow-size $shadow-size $shadow-blur $dark-shadow, -12px -12px $shadow-blur $light-shadow;
+    transition: all 250ms;
+    width: 250px;
+    border-radius: 20px;
+    display: block;
+    text-decoration: none;
+
+    &:hover, &:focus {
+      outline: none;
+      cursor: pointer;
+      color:$text-color;
+      box-shadow: 3.6px 3.6px $shadow-size $dark-shadow, -3.6px -3.6x $shadow-size $light-shadow;
+    }
+  }
+
+  table {
+    &.table {
+      width: 700px !important;
+      height: 400px !important;
+      margin: 50px auto;
+    }
+
+    td {
+      width: $width;
+      height: $height;
+      border: none;
+      padding: 10px !important;
+
+
+    }
+  }
+
+  .game-title {
+    margin-top: 30px;
+    color:$text-color;
+  }
+
+  .playground-center {
+    margin: 0 auto;
+  }
+
+  .progress-bar {
+    margin: 0 auto;
+    padding: 0;
+    background-color: transparent;
+    color: $text-color;
+
+    #myProgress {
+      padding: 10px;
+      border-radius: 20px;
+      -webkit-box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      -moz-box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      box-shadow: inset 7px 7px 12px $dark-shadow, 6px 5px 11px $light-shadow;
+      background: #dfe8f0;
+      width: 100%;
+
+      #myBar {
+        border-radius: 20px;
+        height: 30px;
+        background-color: #61c183;
+      }
+    }
+  }
 }

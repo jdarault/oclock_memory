@@ -41,7 +41,7 @@ class GameController extends AbstractController
         // Récupération des meilleurs scores pour affichage
         $scores = $this->service->recupererMeilleursScores();
 
-        // Création du formulaire pour récupérere le nom du joueur
+        // Création du formulaire pour récupérer le nom du joueur
         $form = $this->createFormBuilder()
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
@@ -84,7 +84,7 @@ class GameController extends AbstractController
         $request->getSession()->set('cartes', $this->service->definirEmplacementCartes());
         // Initialisation du tableau à afficher
         $request->getSession()->set('tableau', $this->service->initialiserTableau());
-
+        // Rendering du tableau de carte
         $tableau = $this->renderView('partials/tableau.html.twig', array('classe' => $request->getSession()->get('tableau')));
 
         return $this->render('main/game.html.twig', array('tableau' => $tableau));
@@ -119,6 +119,7 @@ class GameController extends AbstractController
         $emplacements = $request->getSession()->get('cartes');
         $tableau = $request->getSession()->get('tableau');
 
+        // Affichage de la carte cliquée dans le tableau (et sauvegarde)
         $tableau[$carte] = $emplacements[$carte];
         $request->getSession()->set('tableau', $tableau);
 
@@ -138,6 +139,7 @@ class GameController extends AbstractController
         $cartes = explode(',', $request->request->get('cartes'));
         $tableau = $request->getSession()->get('tableau');
 
+        // Re-cache les cartes passées en paramètre
         foreach ($cartes as $carte) {
             $tableau[$carte] = 'not-found';
         }
@@ -161,8 +163,10 @@ class GameController extends AbstractController
         $secondes = $request->request->get('secondes');
         $nom = $request->getSession()->get('player_name');
 
+        // Enregistrement du joueur avec le temps effectué
         $this->service->enregistrerPartie($nom, $secondes);
 
+        // Aucune réponse nécessaire...
         return new Response('');
     }
 }
